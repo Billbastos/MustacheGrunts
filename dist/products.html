@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../css/application.css">
+    <title></title>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="col-md-12 col-md-offset-0">
+    <div class="page-header">
+        <h1>Company <small>Products</small></h1>
+    </div>
+</div>
+
+
+<!-- CATEGORIES -->
+<div class="col-md-2">
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="list-group">
+                    <button type="button" class="list-group-item">TV</button>
+                    <button type="button" class="list-group-item">computer</button>
+                    <button type="button" class="list-group-item">bike</button>
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="col-md-10">
+
+        Hi chris!
+        Hi mark!
+        Hi scott!
+    
+
+    <div class="row">
+        <div class="col-xs-6 col-md-3" id="t1">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="../images/download.svg" alt="pd">
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="col-md-12 modal" id="modal">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 innerModal">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <a href="#" class="">
+                        <img src="../images/download.svg" alt="pd">
+                    </a>
+                </div>
+                <div class="col-md-12 "><h2>title</h2></div>
+                <div class="col-md-12 ">short description of product</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script language="javascript" type="application/javascript" src="../js/products.js"></script>
+<script>
+
+    var prod = document.getElementById("t1");
+    var mod = document.getElementById("modal");
+
+    prod.onclick = function () {
+        mod.setAttribute("style", "display:block; background: rgba(0, 0, 0, 0.6);");
+    };
+
+    mod.onclick = function () {
+        mod.setAttribute("style", "display:none;");
+    };
+
+
+
+</script>
+
+</body>
+</html>
