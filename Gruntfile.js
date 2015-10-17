@@ -13,9 +13,12 @@ module.exports = function(grunt) {
         watch: {
             files: '<%= jshint.files %>',
             tasks: 'jshint',
-            pivotal : {
+            jasmine : {
                 files: ['src/**/*.js', 'specs/**/*.js'],
-                tasks: 'jasmine:pivotal:build'
+                tasks: 'jasmine:build'
+            },
+            client: {
+                files: ['src/**/*']
             }
         },
 
@@ -29,25 +32,33 @@ module.exports = function(grunt) {
             custom_options: {
                 options: {
                     src: 'src',
-                    dist: 'tmp',
+
                     type: 'mustache'
                 },
-                globals: {
-                    dev: 'this is global'
-                }
+
             },
         },
 
         // Unit tests.
         jasmine: {
-            pivotal: {
-                src: 'src/**/*.js',
+           // pivotal: {
+                src: 'spec/**/*.js',
                 options: {
                     specs: 'spec/*Spec.js',
                     helpers: 'spec/*Helper.js'
                 }
-            }
+            //}
         },
+
+        connect: {
+            client: {
+                options: {
+                    port: 9000,
+                    base: 'src',
+                    open: true
+                }
+            }
+        }
     });
 
     // Carrega os plugins que proveem as tarefas especificadas no package.json.
@@ -55,10 +66,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-mustache-html');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+
 
     // Tarefa padrão que será executada se o Grunt
     // for chamado sem parâmetros.
-    grunt.registerTask('test', ['mustache_html', 'jasmine']);
-    grunt.registerTask('default', ['jshint','test']);
+    grunt.registerTask('mustache', ['mustache_html']);
+    grunt.registerTask('preview', ['connect:client','watch:client']);
+    grunt.registerTask('run',['mustache', 'preview']);
+    grunt.registerTask('test', ['jshint', 'jasmine','watch:jasmine']);
 
 };
