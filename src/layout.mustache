@@ -151,6 +151,7 @@
 
 <!-- SCRIPTS -->
 <script language="javascript" type="application/javascript" src="../js/products.js"></script>
+<script language="javascript" type="application/javascript" src="../js/category.js"></script>
 <script>
 
     var prod = document.getElementById("t1");
@@ -166,9 +167,38 @@
 
     var ps3 = new Product("Playstation 3", 199.00, "http://test/img1.jpg");
     var ps4 = new Product("Playstation 4", 349.99, "http://test/img2.jpg");
+    var cat = new Category(1,"Best",123);
 
     console.log(ps3.toJson());
     console.log(ps4.toJson());
+    console.log(cat.toJson());
+
+
+    var xmlhttp = new XMLHttpRequest();
+    var url = "http://www.bestbuy.ca/api/v2/json/category/departments";
+
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            //var myArr = JSON.parse(xmlhttp.responseText);
+            var myArr = JSON.parse(xmlhttp.responseText);
+            myFunction(myArr);
+        }
+    }
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    function myFunction(arr) {
+        var cats = [];
+        for(var i = 0; i < arr.length; i++) {
+            for(var j=0; j < arr[i].subCategories.length; j++) {
+
+                var catg = new Category(arr[i].subCategories[j].id, arr[i].subCategories[j].name, arr[i].subCategories[j].productCount);
+                cats.push(catg);
+            }
+        }
+        console.log(cats);
+    }
 
 
 </script>
