@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/app.min.css">
+  <title>BestBuy.ca products</title>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="col-md-12 col-md-offset-0">
+    <div class="page-header">
+      <h1>Company <small>Products</small></h1>
+    </div>
+  </div>
+
+
+  <!-- CATEGORIES -->
+  <div class="col-md-2">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="list-group" id="categories">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="col-md-10" id="products">
+  </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="mod-prod-detail" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" id="modal-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Product Detail</h4>
+          </div>
+          <div class="modal-body" id="detail">
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <!-- SCRIPTS -->
+    <script Language="javascript" type="application/javascript" src="js/dist/app.min.js"></script>
+    <script>
+
+
+
+      (function(){
+
+        document.getElementById("modal-close").onclick = function(){
+          document.getElementById('detail').innerHTML = "";
+          document.getElementById('mod-prod-detail').setAttribute('style', 'display:none;');
+        }
+
+        var categoryDao = new CategoryDao($);
+        var categoryService = new CategoryService(categoryDao);
+        categoryService.loadAll({elementId: "categories"});
+
+        var productDao = new ProductDao($);
+        var productServiceList = new ProductService(productDao,"20001");
+        productServiceList.loadAll({elementId: "products"});
+
+
+      }());
+
+      function loadProducts (catId) {
+        var productDao = new ProductDao($);
+        var productServiceList = new ProductService(productDao, catId);
+        productServiceList.loadAll({elementId: "products"});
+      };
+
+      function loadDetail (sku) {
+        document.getElementById("mod-prod-detail").setAttribute("style", "display:block");
+        var productDao = new ProductDao($);
+        var productServiceDetail = new ProductService(productDao, sku);
+        productServiceDetail.getBySku({elementId: "detail"});
+      };
+
+    </script>
+  </body>
+</html>

@@ -1,79 +1,124 @@
-/**
- * Created by Guilherme on 2015-10-15.
- */
 module.exports = function(grunt) {
 
-    // Inicializa as tarefas do Grunt com as configurações que seguem
-    grunt.initConfig({
+  var config = {},
+      distPath = "dist/",
+      publicJsPath = "public/js/",
+      publicCssPath = "public/css/",
+      publicImgPath = "public/images/";
 
-        // Uma lista de arquivos que terão sua sintaxe checada com JSHint
-        jshint: {files: ['Gruntfile.js', 'js/**/*.js'] },
+  // Clean Folder ================================
+  config.clean = [distPath, publicJsPath, publicCssPath, publicImgPath];
 
-        // Tarefas que serão executadas com 'grunt watch'
-        watch: {
-            files: '<%= jshint.files %>',
-            tasks: 'jshint',
-            jasmine : {
-                files: ['src/**/*.js', 'specs/**/*.js'],
-                tasks: 'jasmine:build'
-            },
-            client: {
-                files: ['src/**/*']
-            }
-        },
+  // Concat ================================
+  config.concat = {
+    utils: {
+      src: [
+        "node_modules/mustache/mustache.js",
+        "src/js/models/category.js",
+        "src/js/models/product.js",
+        "src/js/utils/ajax-util.js",
+        "src/js/utils/jquery-2.1.4.js",
+        "src/js/dao/category-dao.js",
+        "src/js/dao/product-dao.js",
+        "src/js/services/category-service.js",
+        "src/js/services/product-service.js"
+      ],
+      dest: distPath + "app.js"
+    },
+    css: {
+      src: "src/css/*.css",
+      dest: distPath + "app.css"
+    }
 
-        // Configuration to be run (and then tested).
-        mustache_html: {
-            default_options: {
-                options: {
-                    src: 'src'
-                }
-            },
-            custom_options: {
-                options: {
-                    src: 'src',
+  };
 
-                    type: 'mustache'
-                },
+  // Minification ================================
+  config.uglify = {
+    options: {
+      banner: "/*! v<%= grunt.option('versionNumber') %> - <%= grunt.template.today('yyyy-mm-dd') %> */ ",
+      mangle : true,
+      compress: true,
+      report: "gzip"
+    },
+    target: {
+      src: distPath + "*.js",
+      expand: true,
+      ext: ".min.js",
+      dest: publicJsPath
+    }
+  };
 
-            },
-        },
+  config.cssmin = {
+    css:{
+      src: distPath + "*.css",
+      dest: publicCssPath + "app.min.css"
+    }
+  };
 
-        // Unit tests.
-        jasmine: {
-           // pivotal: {
-                src: 'spec/**/*.js',
-                options: {
-                    specs: 'spec/*Spec.js',
-                    helpers: 'spec/*Helper.js'
-                }
-            //}
-        },
+  // Svgmin =====================================
+  config.svgmin = {
+    dist: {
+      files: [{
+        'public/images/download.svg' : 'src/images/download.svg'
+      }]
+    }
+  };
 
-        connect: {
-            client: {
-                options: {
-                    port: 9000,
-                    base: 'src',
-                    open: true
-                }
-            }
-        }
-    });
+  // JSHint =====================================
+  config.jshint = {};
+  config.jshint.src = {
+    options: {
+      laxcomma: true,
+      ignores: ["src/**/jquery*.js"]
+    },
+    files: {
+      dist: ["src/**/*.js"]
+    }
+  };
 
-    // Carrega os plugins que proveem as tarefas especificadas no package.json.
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-mustache-html');
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
-    grunt.loadNpmTasks('grunt-contrib-connect');
+  // Connect Static Web Server =====================================
+  config.connect = {
+    manual: {
+      options: {
+        keepalive: true,
+        port: 4000,
+        base: "public/"
+      }
+    },
+    server: {
+      options: {
+        port: 8000,
+        base: "."
+      }
+    }
+  };
 
+  // Jasmine =====================================
+  config.jasmine = {
+    all: {
+      src: "src/js/**/*.js",
+      options: {
+        version: "2.3.4",
+        summary: true,
+        specs: "specs/scripts/**/*-spec.js",
+        helpers: "specs/helpers/**/*.js",
+        host : "http://localhost:8000/"
+      }
+    }
+  };
 
-    // Tarefa padrão que será executada se o Grunt
-    // for chamado sem parâmetros.
-    grunt.registerTask('mustache', ['mustache_html']);
-    grunt.registerTask('preview', ['connect:client','watch:client']);
-    grunt.registerTask('run',['mustache', 'preview']);
-    grunt.registerTask('test', ['jshint', 'jasmine','watch:jasmine']);
+  grunt.initConfig(config);
 
+  grunt.loadNpmTasks("grunt-contrib-clean");
+  grunt.loadNpmTasks("grunt-contrib-concat");
+  grunt.loadNpmTasks("grunt-contrib-uglify");
+  grunt.loadNpmTasks("grunt-contrib-jshint");
+  grunt.loadNpmTasks("grunt-contrib-connect");
+  grunt.loadNpmTasks("grunt-contrib-jasmine");
+  grunt.loadNpmTasks("grunt-css");
+  grunt.loadNpmTasks("grunt-svgmin");
+
+  grunt.registerTask("default", ["clean", "jshint", "concat", "uglify", "cssmin", "svgmin"]);
+  grunt.registerTask("tests", ["default", "connect:server", "jasmine"]);
+  grunt.registerTask("testsJasmine", ["connect:server", "jasmine"]);
 };
