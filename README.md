@@ -11,7 +11,7 @@ grunt tests
 grunt connect:manual
 ```
 
-Open http://localhost:4000/departments.html through your browser
+Open http://localhost:4000 through your browser
 
 
 ### How to install all dependencies
